@@ -5,7 +5,6 @@ const router = new express.Router();
 const port = process.env.PORT;
 const cors = require("cors");
 const Traffic = require("./traffic");
-require("./mongoose");
 
 const app = express();
 app.use(express.json());
