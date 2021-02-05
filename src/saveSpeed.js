@@ -10,7 +10,7 @@ mongoose.connect(process.env.MONGODB_URL, {
 });
 
 const getData = async () => {
-  const data = await axios.get("http://localhost:3000/speed");
+  const data = await axios.get(process.env.APP_URL + "/speed");
 
   return data.data.map((datapoint) => ({
     timeStamp: datapoint.CalculatedDate[0],
