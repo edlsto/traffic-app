@@ -1,35 +1,23 @@
-const axios = require("axios");
 const Traffic = require("./traffic");
-const mongoose = require("mongoose");
+const { getTravelTimeData } = require("./apiCalls");
+const { parseTravelTimeData } = require("./utils");
+require("./mongoose.js");
 
-mongoose.connect(process.env.MONGODB_URL, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
-
-const getData = async () => {
-  const data = await axios.get(process.env.APP_URL + "/speed");
-
-  return data.data.map((datapoint) => ({
-    timeStamp: datapoint.CalculatedDate[0],
-    travelTime: parseInt(datapoint.TravelTimeInSeconds[0]),
-    direction: datapoint.RoadInfo[0].DirectionTxt[0],
-  }));
+const saveToDatabase = (data) => {
+  data.forEach((datapoint) => {
+    const traffic = new Traffic(datapoint);
+    traffic.save();
+  });
 };
 
 const saveSpeed = async () => {
-  const data = await getData();
-  console.log(data);
-  data.forEach(async (datapoint) => {
-    const traffic = new Traffic(datapoint);
-    try {
-      await traffic.save();
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  try {
+    const data = await getTravelTimeData();
+    const parsedData = parseTravelTimeData(data);
+    saveToDatabase(parsedData);
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 saveSpeed();
