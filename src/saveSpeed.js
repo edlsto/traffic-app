@@ -2,6 +2,7 @@ const Traffic = require("./traffic");
 const { getTravelTimeData } = require("./apiCalls");
 const { parseTravelTimeData } = require("./utils");
 require("./mongoose.js");
+var cron = require("node-cron");
 
 const saveToDatabase = (data) => {
   data.forEach((datapoint) => {
@@ -20,4 +21,7 @@ const saveSpeed = async () => {
   }
 };
 
-saveSpeed();
+cron.schedule("*/2 * * * *", () => {
+  console.log("running a task every other minute");
+  saveSpeed();
+});

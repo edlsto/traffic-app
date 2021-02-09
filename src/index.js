@@ -1,6 +1,6 @@
 const express = require("express");
 const router = new express.Router();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const cors = require("cors");
 const Traffic = require("./traffic");
 const { getCameraData, getTravelTimeData } = require("./apiCalls");
