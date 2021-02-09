@@ -13,7 +13,7 @@ app.use(cors());
 router.get("/photos", async (req, res) => {
   try {
     const data = await getCameraData();
-    res.send(JSON.stringify(data));
+    res.send(data);
   } catch (error) {
     console.log(error);
   }
@@ -22,7 +22,7 @@ router.get("/photos", async (req, res) => {
 router.get("/speed", async (req, res) => {
   try {
     const data = await getTravelTimeData();
-    res.send(JSON.stringify(data));
+    res.send(data);
   } catch (error) {
     console.log(error);
   }
@@ -36,7 +36,7 @@ router.get("/historical", async (req, res) => {
       travelTime: d.travelTime,
       direction: d.direction,
     }));
-    res.send(JSON.stringify(data));
+    res.send(data);
   } catch (error) {
     console.log(error);
   }
