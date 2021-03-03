@@ -10,6 +10,17 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const getMidnight = (date) => new Date(date.setHours(0, 0, 0, 0));
+const getMidnightAfter = (date) => new Date(date.setHours(24, 0, 0, 0));
+
+function convertTZ(date, tzString) {
+  return new Date(
+    (typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {
+      timeZone: tzString,
+    })
+  );
+}
+
 router.get("/photos", async (req, res) => {
   try {
     const data = await getCameraData();
@@ -29,10 +40,12 @@ router.get("/speed", async (req, res) => {
 });
 
 router.get("/today", async (req, res) => {
+  const date = convertTZ(new Date(), "America/Denver");
+  const midnight = getMidnight(date);
   try {
     let data = await Traffic.find({
       timeStamp: {
-        $gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+        $gte: midnight,
       },
     });
     data = data.map((d) => ({
@@ -47,11 +60,15 @@ router.get("/today", async (req, res) => {
 });
 
 router.get("/lastweek", async (req, res) => {
+  const oneWeekAgo = new Date(new Date().setDate(new Date().getDate() - 7));
+  const date = convertTZ(oneWeekAgo, "America/Denver");
+  const midnightOneWeekAgo = getMidnight(date);
+  const midnightAfterOneWeekAgo = getMidnightAfter(date);
   try {
     let data = await Traffic.find({
       timeStamp: {
-        $gte: new Date(new Date().setDate(new Date().getDate() - 7)),
-        $lte: new Date(new Date().setDate(new Date().getDate() - 6)),
+        $gte: midnightOneWeekAgo,
+        $lte: midnightAfterOneWeekAgo,
       },
     });
     data = data.map((d) => ({
