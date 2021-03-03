@@ -30,10 +30,14 @@ router.get("/speed", async (req, res) => {
 
 router.get("/historical", async (req, res) => {
   try {
-    let data = await Traffic.find({});
+    let data = await Traffic.find({
+      timeStamp: {
+        $gte: new Date(new Date().setDate(new Date().getDate() - 8)),
+      },
+    });
     data = data.map((d) => ({
       timeStamp: d.timeStamp,
-      travelTime: d.travelTime,
+      travelTime: parseInt(d.travelTime),
       direction: d.direction,
     }));
     res.send(data);

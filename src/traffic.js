@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 
 const trafficSchema = new mongoose.Schema({
   timeStamp: {
-    type: String,
+    type: Date,
     trim: true,
     required: true,
   },
   travelTime: {
-    type: String,
+    type: Number,
     trim: true,
     required: true,
   },
