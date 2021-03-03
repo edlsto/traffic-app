@@ -28,11 +28,30 @@ router.get("/speed", async (req, res) => {
   }
 });
 
-router.get("/historical", async (req, res) => {
+router.get("/today", async (req, res) => {
   try {
     let data = await Traffic.find({
       timeStamp: {
-        $gte: new Date(new Date().setDate(new Date().getDate() - 8)),
+        $gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+      },
+    });
+    data = data.map((d) => ({
+      timeStamp: d.timeStamp,
+      travelTime: parseInt(d.travelTime),
+      direction: d.direction,
+    }));
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/lastweek", async (req, res) => {
+  try {
+    let data = await Traffic.find({
+      timeStamp: {
+        $gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+        $lte: new Date(new Date().setDate(new Date().getDate() - 6)),
       },
     });
     data = data.map((d) => ({
