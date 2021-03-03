@@ -17,7 +17,7 @@ const parseXMLData = (xml) => {
 
 const parseTravelTimeData = (data) => {
   return data.map((datapoint) => ({
-    timeStamp: datapoint.CalculatedDate[0],
+    timeStamp: new Date(datapoint.CalculatedDate[0]),
     travelTime: parseInt(datapoint.TravelTimeInSeconds[0]),
     direction: datapoint.RoadInfo[0].DirectionTxt[0],
   }));
