@@ -41,7 +41,7 @@ router.get("/speed", async (req, res) => {
 
 router.get("/today", async (req, res) => {
   const date = convertTZ(new Date(), "America/Denver");
-  const midnight = getMidnight(date);
+  const midnight = convertTZ(getMidnight(date), "GMT");
   try {
     let data = await Traffic.find({
       timeStamp: {
@@ -62,8 +62,8 @@ router.get("/today", async (req, res) => {
 router.get("/lastweek", async (req, res) => {
   const oneWeekAgo = new Date(new Date().setDate(new Date().getDate() - 7));
   const date = convertTZ(oneWeekAgo, "America/Denver");
-  const midnightOneWeekAgo = getMidnight(date);
-  const midnightAfterOneWeekAgo = getMidnightAfter(date);
+  const midnightOneWeekAgo = convertTZ(getMidnight(date), "GMT");
+  const midnightAfterOneWeekAgo = convertTZ(getMidnightAfter(date), "GMT");
   try {
     let data = await Traffic.find({
       timeStamp: {
