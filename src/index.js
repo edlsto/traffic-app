@@ -34,7 +34,7 @@ router.get("/today", async (req, res) => {
   try {
     let data = await Traffic.find({
       timeStamp: {
-        $gte: moment().tz("America/Denver").startOf("day").format(),
+        $gte: moment().tz("America/Denver").startOf("day").hour(3).format(),
       },
     });
     data = data.map((d) => ({
@@ -55,6 +55,7 @@ router.get("/lastweek", async (req, res) => {
         $gte: moment()
           .tz("America/Denver")
           .startOf("day")
+          .hour(3)
           .subtract(7, "days")
           .format(),
         $lte: moment()
