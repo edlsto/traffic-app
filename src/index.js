@@ -56,12 +56,12 @@ router.get("/lastweek", async (req, res) => {
           .tz("America/Denver")
           .startOf("day")
           .hour(3)
-          .subtract(7, "days")
+          .subtract(1, "days")
           .format(),
         $lte: moment()
           .tz("America/Denver")
           .endOf("day")
-          .subtract(7, "days")
+          .subtract(1, "days")
           .format(),
       },
     });
