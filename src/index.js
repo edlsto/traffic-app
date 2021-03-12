@@ -4,8 +4,8 @@ const port = process.env.PORT || 3000;
 const cors = require("cors");
 const Traffic = require("./traffic");
 const { getCameraData, getTravelTimeData } = require("./apiCalls");
-require("./mongoose.js");
 const moment = require("moment");
+require("./mongoose.js");
 require("moment-timezone");
 
 const app = express();
@@ -56,12 +56,12 @@ router.get("/lastweek", async (req, res) => {
           .tz("America/Denver")
           .startOf("day")
           .hour(3)
-          .subtract(1, "days")
+          .subtract(7, "days")
           .format(),
         $lte: moment()
           .tz("America/Denver")
           .endOf("day")
-          .subtract(1, "days")
+          .subtract(7, "days")
           .format(),
       },
     });
